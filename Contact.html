@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact MindMap Care</title>
+    <style>
+        :root { 
+            --primary: #6c5ce7; 
+            --bg: #f0f3f7; 
+            --text: #2d3436; 
+            --success: #00b894;
+        }
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: var(--bg); 
+            color: var(--text); 
+            display: flex; 
+            justify-content: center; 
+            padding: 40px; 
+        }
+        .contact-container { 
+            background: white; 
+            padding: 30px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+            width: 100%; 
+            max-width: 500px; 
+        }
+        h1 { color: var(--primary); text-align: center; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, textarea { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            font-family: inherit;
+        }
+        textarea { height: 120px; resize: none; }
+        .submit-btn { 
+            width: 100%; 
+            padding: 15px; 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            border-radius: 30px; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: 0.3s; 
+        }
+        .submit-btn:hover { background: #5649c1; }
+    </style>
+</head>
+<body>
+
+<div class="contact-container">
+    <h1>Contact Care ✉️</h1>
+    <p style="text-align: center;">Have questions about the MindMap assessment? Sudhansh Jain and the team are here to help.</p>
+    
+    <form action="https://formspree.io/f/maqpgwby" method="POST">
+        <div class="form-group">
+            <label>Your Name</label>
+            <input type="text" name="name" placeholder="Enter your name" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Your Email</label>
+            <input type="email" name="_replyto" placeholder="email@example.com" required>
+        </div>
+        
+        <div class="form-group">
+            <label>Message</label>
+            <textarea name="message" placeholder="How can we help you today?" required></textarea>
+        </div>
+
+        <input type="hidden" name="_subject" value="New MindMap Care Inquiry">
+        
+        <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kids Login | MindMap </title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ===== Common Styles from top.html ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  background: linear-gradient(to bottom right, #89f7fe, #66a6ff);
+  min-height: 100vh;
+}
+
+/* ===== Header ===== */
+header {
+  background: #ffffff;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+header h1 {
+  color: #4aa3a2;
+  font-size: 22px;
+}
+
+nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #4aa3a2;
+}
+
+/* ===== Login Page Styles ===== */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: calc(100vh - 80px);
+}
+
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+  text-align: center;
+  font-family: Comic Sans MS, cursive;
+}
+
+.login-box h1 {
+  color: #ff6f61;
+  margin-bottom: 15px;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background: #ff6f61;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  margin-top: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== Header Attached ===== -->
+<header>
+  <h1>MindMap </h1>
+  <nav>
+    <a href="top.html">Home</a>
+    <a href="#">Features</a>
+    <a href="#">For Parents</a>
+    <a href="#">Contact</a>
+    <a href="login page.html">Login</a>
+  </nav>
+</header>
+
+<!-- ===== Login Form ===== -->
+<div class="login-container">
+  <div class="login-box">
+    <h1>Kids Login 😊</h1>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="number" id="age" placeholder="Your Age">
+    <button onclick="login()">Login 🚀</button>
+    <p id="error" class="error"></p>
+  </div>
+</div>
+
+<script>
+function login() {
+  const name = document.getElementById("name").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const error = document.getElementById("error");
+
+  if (!name || !age) {
+    error.textContent = "Enter name and age";
+    return;
+  }
+
+  if (age < 5 || age > 18) {
+    error.textContent = "Age must be 5–18";
+    return;
+  }
+
+  const entries = JSON.parse(localStorage.getItem("loginEntries")) || [];
+  entries.push({
+    name: name,
+    age: age,
+    time: new Date().toLocaleString()
+  });
+  localStorage.setItem("loginEntries", JSON.stringify(entries));
+
+  window.location.href = "quiz.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Mind Club 🌈</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Comic+Neue:wght@400;700&display=swap');
+    body {
+      font-family: 'Comic Neue', cursive;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      margin: 0;
+      padding: 0;
+    }
+    h1, h2, h3 {
+      font-family: 'Fredoka One', cursive;
+      color: #5b5f97;
+    }
+    .breathe-circle {
+      width: 50px;
+      height: 50px;
+      background-color: #ff9a9e;
+      border-radius: 50%;
+      animation: breathe 4s infinite ease-in-out;
+      cursor: pointer;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.8); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+    }
+    .emotion-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-20">
+  <header class="bg-gradient-to-r from-purple-300 to-pink-200 py-6 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl text-white drop-shadow-md">Happy Mind Club</h1>
+        <p class="text-xl text-white mt-2">Where feelings are fun to explore! 🌈</p>
+      </div>
+      <nav class="text-white">
+        <ul class="flex space-x-6">
+          <li><a href="quiz.html" class="hover:underline">Quiz</a></li>
+          <li><a href="login page.html" class="hover:underline">login</a></li>
+          <li><a href="contact.html" class="hover:underline">Contact Us</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 mt-8">
+    <!-- Mood Tracker -->
+    <section id="moodTracker" class="mb-12 bg-white rounded-xl p-6 shadow-md">
+      <h2 class="text-3xl text-center mb-6">How Are You Feeling Today?</h2>
+      <div class="flex flex-wrap justify-center gap-4 mb-6">
+        <button onclick="trackMood('happy')" class="text-6xl hover:scale-110 transition-transform">😊</button>
+        <button onclick="trackMood('sad')" class="text-6xl hover:scale-110 transition-transform">😢</button>
+        <button onclick="trackMood('angry')" class="text-6xl hover:scale-110 transition-transform">😠</button>
+        <button onclick="trackMood('calm')" class="text-6xl hover:scale-110 transition-transform">😌</button>
+        <button onclick="trackMood('silly')" class="text-6xl hover:scale-110 transition-transform">🤪</button>
+      </div>
+      <div id="moodResponse" class="text-center text-xl text-purple-600 font-bold"></div>
+    </section>
+
+    <!-- Breathing Exercise -->
+    <section class="mb-12 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl p-6 shadow-md">
+      <h2 class="text-3xl text-center mb-6">Breathe With the Bubbles!</h2>
+      <div class="flex flex-col items-center">
+        <div class="flex justify-center mb-8">
+          <div class="breathe-circle mr-4" onclick="startBreathing()"></div>
+          <div class="breathe-circle mr-4" style="animation-delay: 0.5s;"></div>
+          <div class="breathe-circle" style="animation-delay: 1s;"></div>
+        </div>
+        <p class="text-lg text-center max-w-2xl">
+          When you feel worried or upset, try this:<br>
+          1. <strong>Breathe in</strong> slowly when bubbles grow big 🌬️<br>
+          2. <strong>Breathe out</strong> when they shrink tiny 🍃
+        </p>
+      </div>
+    </section>
+
+    <!-- Positive Affirmations -->
+    <section class="mb-12 bg-white rounded-xl p-6 shadow-md">
+      <h2 class="text-3xl text-center mb-6">Magic Words for Your Heart</h2>
+      <div class="text-center mb-6">
+        <button onclick="generateAffirmation()" class="bg-pink-400 hover:bg-pink-500 text-white font-bold py-3 px-6 rounded-full text-lg transition-all shadow-md">
+          Give Me Magic Words ✨
+        </button>
+      </div>
+      <div id="affirmation" class="text-xl text-center p-4 bg-yellow-100 rounded-lg border-2 border-dashed border-yellow-300"></div>
+    </section>
+
+    <!-- Feelings Explorer -->
+    <section class="mb-12">
+      <h2 class="text-3xl text-center mb-8">Let's Learn About Feelings!</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Emotion Card 1 -->
+        <div class="emotion-card bg-white rounded-xl p-6 shadow-md transition-all duration-300">
+          <div class="text-6xl text-center mb-4">😊</div>
+          <h3 class="text-2xl text-center mb-3">Happy</h3>
+          <p class="text-md">
+            Happiness feels like sunshine inside! It's okay to feel happy even when others are sad—your feelings matter too.
+          </p>
+        </div>
+        <!-- Emotion Card 2 -->
+        <div class="emotion-card bg-white rounded-xl p-6 shadow-md transition-all duration-300">
+          <div class="text-6xl text-center mb-4">😢</div>
+          <h3 class="text-2xl text-center mb-3">Sad</h3>
+          <p class="text-md">
+            Sadness is like rain clouds—it's temporary! Drawing how you feel or talking to someone can help the sun come back.
+          </p>
+        </div>
+        <!-- Emotion Card 3 -->
+        <div class="emotion-card bg-white rounded-xl p-6 shadow-md transition-all duration-300">
+          <div class="text-6xl text-center mb-4">😠</div>
+          <h3 class="text-2xl text-center mb-3">Angry</h3>
+          <p class="text-md">
+            Anger is a storm inside. Try squeezing a stuffed animal or dancing to loud music until the storm calms down.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mini Games -->
+    <section class="mb-12 bg-gradient-to-br from-green-100 to-teal-100 rounded-xl p-6 shadow-md">
+      <h2 class="text-3xl text-center mb-6">Fun Brain Breaks</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Game 1 -->
+        <div class="bg-white rounded-xl p-6 shadow-md">
+          <h3 class="text-2xl mb-4 text-center">Cloud Gazing 🌤️</h3>
+          <div class="mb-4">
+            <img src="https://placehold.co/600x300?text=Spot+the+funny+shapes+in+clouds!" alt="Fluffy white clouds against blue sky with imaginative shapes like dinosaurs, rabbits, and hearts visible" class="rounded-lg w-full">
+          </div>
+          <button onclick="startCloudGame()" class="w-full bg-blue-400 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded-lg">
+            Play Cloud Game
+          </button>
+        </div>
+        <!-- Game 2 -->
+        <div class="bg-white rounded-xl p-6 shadow-md">
+          <h3 class="text-2xl mb-4 text-center">Squish the Stress 🎈</h3>
+          <div class="mb-4 flex justify-center">
+            <div id="stressBall" class="w-24 h-24 bg-red-400 rounded-full cursor-pointer hover:scale-110 transition-transform shadow-lg"></div>
+          </div>
+          <p class="text-center">Click fast to "pop" worries away!</p>
+        </div>
+      </div>
+    </section>
+      <div id="quizResponse" class="text-xl text-center p-4 bg-yellow-100 rounded-lg border-2 border-dashed border-yellow-300 hidden"></div>
+    </section>
+  </form>
+      <div id="contactResponse" class="text-xl text-center p-4 bg-yellow-100 rounded-lg border-2 border-dashed border-yellow-300 hidden"></div>
+    </section>
+  </main>
+
+  <footer class="bg-gradient-to-r from-purple-200 to-blue-200 py-6 mt-12">
+    <div class="container mx-auto px-4 text-center">
+      <p class="text-lg font-bold">Remember: All feelings are okay! 💖</p>
+      <p class="mt-2">Made with care for kids like you</p>
+    </div>
+  </footer>
+
+  <script>
+    // Mood Tracker
+    function trackMood(mood) {
+      const responses = {
+        happy: "Yay! Happiness is contagious—share your smile with someone today!",
+        sad: "It's okay to feel sad. Would you like a virtual hug? (っ´▽`)っ",
+        angry: "Anger is like a volcano—let it cool down with deep breaths! 🌋",
+        calm: "Peaceful like a sleepy cat... great job finding calm! 🐱",
+        silly: "Silly moods are the best! Want to do a funny dance? 💃"
+      };
+      document.getElementById('moodResponse').textContent = responses[mood];
+    }
+
+    // Breathing Exercise
+    function startBreathing() {
+      alert("Follow the bubbles!\nBreathe IN when they grow...\nBreathe OUT when they shrink!\nDo this 5 times. Ready... GO!");
+    }
+
+    // Positive Affirmations
+    const affirmations = [
+      "You are braver than you think!",
+      "Your feelings matter just like you matter!",
+      "Mistakes help your brain grow smarter!",
+      "You have a special light inside that never goes out!",
+      "Today might be tough, but YOU are tougher!",
+      "Being kind to yourself is just as important as being kind to others!"
+    ];
+    
+    function generateAffirmation() {
+      const randomIndex = Math.floor(Math.random() * affirmations.length);
+      document.getElementById('affirmation').textContent = affirmations[randomIndex];
+    }
+
+    // Cloud Game
+    function startCloudGame() {
+      const clouds = ["dragon", "ice cream", "spaceship", "unicorn", "pizza"];
+      const cloud = clouds[Math.floor(Math.random() * clouds.length)];
+      alert(`Look at the clouds and find a ${cloud} shape!\nTake 3 deep breaths while you search.`);
+    }
+
+    // Stress Ball Game
+    let squishCount = 0;
+    document.getElementById('stressBall').addEventListener('click', function() {
+      squishCount++;
+      this.textContent = squishCount;
+      this.style.transform = 'scale(0.9)';
+      setTimeout(() => {
+        this.style.transform = 'scale(1)';
+      }, 100);
+      
+      if (squishCount >= 10) {
+        this.textContent = "POP!";
+        setTimeout(() => {
+          squishCount = 0;
+          this.textContent = "";
+        }, 800);
+      }
+    });
+
+    // Quiz Functionality
+    function startQuiz() {
+      const quizQuestions = [
+        { question: "What makes you feel happy?", options: ["Playing", "Reading", "Eating"], answer: "Playing" },
+        { question: "What do you do when you're sad?", options: ["Cry", "Talk to a friend", "Ignore it"], answer: "Talk to a friend" },
+        { question: "How do you express anger?", options: ["Yell", "Scream", "Take deep breaths"], answer: "Take deep breaths" }
+      ];
+      let score = 0;
+
+      quizQuestions.forEach((q, index) => {
+        const userAnswer = prompt(`${q.question}\nOptions: ${q.options.join(", ")}`);
+        if (userAnswer === q.answer) {
+          score++;
+        }
+      });
+
+      document.getElementById('quizResponse').textContent = `You scored ${score} out of ${quizQuestions.length}!`;
+      document.getElementById('quizResponse').classList.remove('hidden');
+    }
+
+    // Contact Form Submission
+    document.getElementById('contactForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      // Simulate sending the message
+      document.getElementById('contactResponse').textContent = `Thank you, ${name}! Your message has been sent.`;
+      document.getElementById('contactResponse').classList.remove('hidden');
+      this.reset(); // Reset the form
+    });
+  </script>
+</body>
+</html>

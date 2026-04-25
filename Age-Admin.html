@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mental Health Admin Panel</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f3f7; padding: 40px; }
+        .admin-box { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 12px; border-bottom: 1px solid #eee; }
+        th { background: #6c5ce7; color: white; border-radius: 5px 5px 0 0; }
+        .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; }
+        .status-good { background: #e8fcf1; color: #00b894; }
+        .status-warn { background: #fff9e6; color: #fdcb6e; }
+        .status-bad { background: #fff0f0; color: #ff7675; }
+    </style>
+</head>
+<body>
+
+<div class="admin-box">
+    <h1>Admin Dashboard: Assessment Scores</h1>
+    <button onclick="exportData()" style="padding: 10px; cursor: pointer;">Download Report (CSV)</button>
+    
+    <table id="adminTable">
+        <thead>
+            <tr>
+                <th>Date/Time</th>
+                <th>Age Group</th>
+                <th>Score</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="adminBody"></tbody>
+    </table>
+</div>
+
+<script>
+    function loadAdminData() {
+        const scores = JSON.parse(localStorage.getItem('adminScores')) || [];
+        const tbody = document.getElementById('adminBody');
+        
+        tbody.innerHTML = scores.map(item => `
+            <tr>
+                <td>${item.timestamp}</td>
+                <td>${item.ageGroup}</td>
+                <td>${item.score}</td>
+                <td><span class="badge">${item.status}</span></td>
+                <td><button onclick="deleteEntry(${item.id})">🗑️</button></td>
+            </tr>
+        `).reverse().join(''); // Show newest first
+    }
+
+    function deleteEntry(id) {
+        let scores = JSON.parse(localStorage.getItem('adminScores'));
+        scores = scores.filter(s => s.id !== id);
+        localStorage.setItem('adminScores', JSON.stringify(scores));
+        loadAdminData();
+    }
+
+    function exportData() {
+        const scores = localStorage.getItem('adminScores');
+        const blob = new Blob([scores], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'mental_health_report.json';
+        a.click();
+    }
+
+    window.onload = loadAdminData;
+</script>
+</body>
+</html>

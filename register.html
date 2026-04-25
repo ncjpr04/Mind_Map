@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kids Registration 📝</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Comic Sans MS, cursive;
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      width: 340px;
+      text-align: center;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+
+    h1 { color: #ff6f61; }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background: #ff6f61;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .msg {
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success { color: green; }
+    .error { color: red; }
+
+    a {
+      text-decoration: none;
+      color: #66a6ff;
+      font-weight: bold;
+      display: block;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Kids Registration 🧒👧</h1>
+
+  <input type="text" id="name" placeholder="Child Name">
+  <input type="number" id="age" placeholder="Age">
+  <input type="email" id="email" placeholder="Parent Email">
+
+  <button onclick="register()">Register ✅</button>
+
+  <p id="msg" class="msg"></p>
+
+  <a href="login page.html">⬅ Back to Login</a>
+</div>
+
+<script>
+function register() {
+  const name = document.getElementById("name").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const msg = document.getElementById("msg");
+
+  msg.textContent = "";
+  msg.className = "msg";
+
+  // Validation
+  if (!name || !age || !email) {
+    msg.textContent = "❌ Please fill all fields";
+    msg.classList.add("error");
+    return;
+  }
+
+  if (age < 5 || age > 18) {
+    msg.textContent = "❌ Age must be between 5 and 18";
+    msg.classList.add("error");
+    return;
+  }
+
+  // Get stored data
+  const registrations =
+    JSON.parse(localStorage.getItem("registrations")) || [];
+
+  const registeredKids =
+    JSON.parse(localStorage.getItem("registeredKids")) || [];
+
+  // 🔍 Check if already registered
+  const alreadyRegistered = registeredKids.some(
+    kid => kid.name === name && kid.age == age
+  );
+
+  if (alreadyRegistered) {
+    msg.textContent = "⚠️ You have already registered";
+    msg.classList.add("error");
+    return;
+  }
+
+  // ✅ Save registration (ONLY ONCE)
+  registrations.push({
+    name,
+    age,
+    email,
+    time: new Date().toLocaleString()
+  });
+
+  registeredKids.push({ name, age });
+  localStorage.setItem("registrations", JSON.stringify(registrations));
+  localStorage.setItem("registeredKids", JSON.stringify(registeredKids));
+
+  msg.textContent = "✅ Registration Successful! Now you can login.";
+  msg.classList.add("success");
+
+  // Optional: clear inputs
+  document.getElementById("name").value = "";
+  document.getElementById("age").value = "";
+  document.getElementById("email").value = "";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; }
+        .dashboard { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .chart-container { width: 400px; margin: 20px auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; border-bottom: 1px solid #ddd; text-align: left; }
+        th { background: #6c5ce7; color: white; }
+        .btn-clear { background: #ff4757; color: white; border: none; padding: 10px; cursor: pointer; border-radius: 5px; }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h1>Admin Panel - Mental Health Analytics</h1>
+    <button class="btn-clear" onclick="clearData()">Clear All Data</button>
+
+    <div class="chart-container">
+        <canvas id="statusChart"></canvas>
+    </div>
+
+    <h3>Recent Submissions</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Age Group</th>
+                <th>Score</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+</div>
+
+<script>
+    const data = JSON.parse(localStorage.getItem('mentalHealthScores')) || [];
+    const tableBody = document.getElementById('table-body');
+    
+    // Count statuses for Chart
+    let counts = { "EMERGENCY": 0, "Normal": 0, "Everything is Normal!": 0 };
+
+    data.forEach(item => {
+        // Update Table
+        const row = `<tr>
+            <td>${item.date}</td>
+            <td>${item.ageGroup}</td>
+            <td>${item.score}</td>
+            <td>${item.status}</td>
+        </tr>`;
+        tableBody.innerHTML += row;
+
+        // Update Chart Data
+        if(item.status.includes("EMERGENCY")) counts["EMERGENCY"]++;
+        else if(item.status.includes("Everything")) counts["Everything is Normal!"]++;
+        else counts["Normal"]++;
+    });
+
+    // Initialize Chart
+    const ctx = document.getElementById('statusChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Emergency', 'Consult Doctor', 'Healthy/Normal'],
+            datasets: [{
+                data: [counts["EMERGENCY"], counts["Normal"], counts["Everything is Normal!"]],
+                backgroundColor: ['#ff4757', '#ffa502', '#2ed573']
+            }]
+        },
+        options: { plugins: { title: { display: true, text: 'User Health Distribution' } } }
+    });
+
+    function clearData() {
+        if(confirm("Delete all records?")) {
+            localStorage.removeItem('mentalHealthScores');
+            location.reload();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Teen Anxiety Quiz</title>
+<style>
+  body { font-family: Arial, sans-serif; max-width: 700px; margin: auto; padding: 20px; background-color: #f0f8ff; }
+  h1 { text-align: center; color: #2c3e50; font-size: 2.5em; position: relative; animation: fadeInDown 1s ease; }
+  h1::after { content: ''; display: block; width: 80px; height: 4px; background: #3498db; margin: 10px auto 0; border-radius: 2px; animation: growLine 1s ease forwards; }
+  @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes growLine { from { width: 0; } to { width: 80px; } }
+  .question { background: #ffffff; border-radius: 10px; padding: 15px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: transform 0.2s; }
+  .question:hover { transform: scale(1.02); }
+  label { display: block; padding: 5px 0; cursor: pointer; }
+  button { background-color: #3498db; color: white; border: none; border-radius: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+  button:hover { background-color: #2980b9; }
+  #resultPage { display: none; text-align: center; animation: fadeIn 1s ease-in-out; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+</style>
+</head>
+<body>
+<div id="quizPage">
+<h1>🧠 Anxiety Quiz</h1>
+<form id="quizForm"></form>
+<button type="button" onclick="submitQuiz()">Submit</button>
+</div>
+
+<div id="resultPage">
+<h1>Your Results</h1>
+<p id="scoreDisplay" style="font-size: 1.2em; font-weight: bold;"></p>
+<p id="resultMessage" style="font-size: 1.1em;"></p>
+<button onclick="restartQuiz()">Restart Quiz</button>
+</div>
+
+<script>
+const questions = [
+  "I feel nervous or anxious in social situations.",
+  "I have trouble sleeping because of worry.",
+  "I avoid certain activities because I feel anxious.",
+  "I feel restless or on edge most days.",
+  "I have trouble concentrating because of worry.",
+  "I experience a racing heartbeat when anxious.",
+  "I feel tense or unable to relax.",
+  "I overthink possible problems before they happen.",
+  "I feel dizzy or lightheaded due to anxiety.",
+  "I feel a knot or tightness in my stomach.",
+  "I get easily startled or jumpy.",
+  "I have trouble controlling my worries.",
+  "I avoid talking to people I don't know.",
+  "I sweat more than usual when nervous.",
+  "I feel panicked in certain situations.",
+  "I find it hard to make decisions because of anxiety.",
+  "I replay past mistakes in my head often.",
+  "I feel like something bad will happen soon.",
+  "I have trouble catching my breath when anxious.",
+  "I feel exhausted from constant worrying."
+];
+
+const options = [
+  { text: "Never", points: 0 },
+  { text: "Sometimes", points: 1 },
+  { text: "Often", points: 2 },
+  { text: "Almost Always", points: 3 }
+];
+
+const quizForm = document.getElementById('quizForm');
+questions.forEach((q, index) => {
+  const div = document.createElement('div');
+  div.className = 'question';
+  div.innerHTML = `<p><strong>${index+1}.</strong> ${q}</p>` +
+    options.map(o => `<label><input type="radio" name="q${index}" value="${o.points}" required> ${o.text}</label>`).join('');
+  quizForm.appendChild(div);
+});
+
+function submitQuiz() {
+  const formData = new FormData(quizForm);
+  let score = 0;
+  for (let value of formData.values()) {
+    score += parseInt(value);
+  }
+
+  let message = "";
+  if (score <= 20) message = "Low anxiety level. Keep practicing relaxation and self-care.";
+  else if (score <= 40) message = "Moderate anxiety level. Consider talking to someone you trust.";
+  else message = "High anxiety level. It may help to seek professional support.";
+
+  document.getElementById('scoreDisplay').textContent = `Your total score is ${score} out of 60.`;
+  document.getElementById('resultMessage').textContent = message;
+
+  document.getElementById('quizPage').style.display = 'none';
+  document.getElementById('resultPage').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartQuiz() {
+  document.getElementById('quizForm').reset();
+  document.getElementById('quizPage').style.display = 'block';
+  document.getElementById('resultPage').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>

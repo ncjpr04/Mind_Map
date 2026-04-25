@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile Settings - MindMap</title>
+  <style>
+    /* --- Modern & Calming Styles --- */
+    :root {
+      --primary: #6366f1;
+      --primary-light: #818cf8;
+      --danger: #ef4444;
+      --glass: rgba(255, 255, 255, 0.9);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      /* Calming background image */
+      background: url('https://images.unsplash.com/photo-1497436072909-60f360e1d4b1?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+    }
+
+    .container {
+      background: var(--glass);
+      backdrop-filter: blur(10px);
+      width: 90%;
+      max-width: 450px;
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255,255,255,0.3);
+      margin: 20px 0;
+    }
+
+    h2 { text-align: center; color: #1e293b; margin: 0 0 25px 0; }
+
+    /* --- Blank Avatar Section --- */
+    .avatar-section {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .avatar-circle {
+      width: 120px;
+      height: 120px;
+      margin: 0 auto 15px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: 3px dashed #cbd5e1; /* Dashed border looks like a placeholder */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #avatarPreview {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none; /* Hidden until an image is chosen */
+    }
+
+    .placeholder-icon {
+      color: #94a3b8;
+      font-size: 40px;
+    }
+
+    .select-btn {
+      background: #fff;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .select-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+
+    /* --- Form Styling --- */
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #475569;
+      font-size: 0.9rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #cbd5e1;
+      border-radius: 12px;
+      box-sizing: border-box;
+      font-size: 0.95rem;
+      background: white;
+    }
+
+    .checkbox-group {
+      background: rgba(0,0,0,0.03);
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .checkbox-group label {
+      display: flex;
+      align-items: center;
+      font-weight: normal;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .checkbox-group input { width: auto; margin-right: 10px; margin-bottom: 0; }
+
+    .btn-main {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+      font-weight: bold;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-main:hover { background: #4f46e5; }
+
+    .btn-danger {
+      background: transparent;
+      color: var(--danger);
+      border: none;
+      width: 100%;
+      margin-top: 15px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>Profile Settings</h2>
+    
+    <div class="avatar-section">
+      <div class="avatar-circle" id="circle">
+        <span class="placeholder-icon" id="icon">👤</span>
+        <img id="avatarPreview" src="" alt="Avatar">
+      </div>
+      
+      <button type="button" class="select-btn" onclick="document.getElementById('fileInput').click()">
+        Select Avatar
+      </button>
+      <input type="file" id="fileInput" hidden accept="image/*">
+    </div>
+
+    <form action="/update-profile" method="POST">
+      <label for="preferredName">Preferred Name</label>
+      <input type="text" id="preferredName" placeholder="Your name (optional)" />
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="example@example.com" required />
+
+      <label for="goal">Mental Health Goal</label>
+      <select id="goal">
+        <option value="">Select a goal</option>
+        <option value="reduce_stress">Reduce stress</option>
+        <option value="improve_sleep">Improve sleep</option>
+        <option value="build_mindfulness">Build mindfulness</option>
+      </select>
+
+      <label for="note">Personal Wellness Note</label>
+      <textarea id="note" rows="2" placeholder="Write a reminder..."></textarea>
+
+      <div class="checkbox-group">
+        <label><input type="checkbox" /> Daily mood check-in</label>
+        <label><input type="checkbox" /> Breathing exercise reminder</label>
+      </div>
+
+      <button type="submit" class="btn-main">Save Profile</button>
+    </form>
+
+    <form action="/delete-account" method="POST">
+      <button type="submit" class="btn-danger">Delete Account</button>
+    </form>
+  </div>
+
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const avatarPreview = document.getElementById('avatarPreview');
+    const placeholderIcon = document.getElementById('icon');
+    const circle = document.getElementById('circle');
+
+    fileInput.addEventListener('change', function() {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          avatarPreview.src = e.target.result;
+          avatarPreview.style.display = 'block';
+          placeholderIcon.style.display = 'none';
+          circle.style.borderStyle = 'solid'; // Change dashed to solid
+          circle.style.borderColor = 'white';
+        }
+        reader.readAsDataURL(file);
+      }
+    });
+  </script>
+</body>
+</html>

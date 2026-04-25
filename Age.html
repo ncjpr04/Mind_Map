@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Children's Mental Health Check-in</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --bg: #f0f3f7;
+            --text: #2d3436;
+            --success: #00b894;
+            --danger: #ff7675;
+            --warning: #fdcb6e;
+        }
+
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            max-width: 700px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .age-selector { margin: 20px 0; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
+        .btn {
+            padding: 12px 20px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn.active { background: var(--primary); color: white; }
+        #quiz-area { margin-top: 30px; text-align: left; }
+        .question-card { background: #f9f9fb; padding: 20px; border-radius: 15px; margin-bottom: 20px; border-left: 5px solid var(--primary); }
+        .options-grid { display: flex; flex-direction: column; gap: 10px; margin-top: 15px; }
+        .option-label { display: block; padding: 12px; background: white; border: 1px solid #ddd; border-radius: 10px; cursor: pointer; }
+        .illustration { width: 100%; max-width: 250px; border-radius: 15px; margin: 0 auto 15px auto; display: block; }
+        
+        #result-display { 
+            margin-top: 20px; 
+            padding: 25px; 
+            border-radius: 15px; 
+            display: none; 
+            text-align: center;
+            border: 2px dashed var(--primary);
+        }
+        
+        .score-badge { font-size: 2rem; font-weight: bold; display: block; margin: 10px 0; }
+        .status-msg { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Mental Health Check-in 🧠</h1>
+    <p>Select your age to start:</p>
+
+    <div class="age-selector">
+        <button class="btn" onclick="loadQuiz('5-9')">Ages 5-9</button>
+        <button class="btn" onclick="loadQuiz('10-14')">Ages 10-14</button>
+        <button class="btn" onclick="loadQuiz('15-19')">Ages 15-19</button>
+    </div>
+
+    <div id="quiz-area" class="hidden">
+        <img id="age-img" src="" class="illustration">
+        <h2 id="age-title" style="text-align: center;"></h2>
+        <form id="quiz-form">
+            <div id="questions-container"></div>
+        </form>
+        
+        <div id="result-display">
+            <h3 id="result-header">Assessment Result</h3>
+            <span id="score-text" class="score-badge"></span>
+            <p id="status-text" class="status-msg"></p>
+            <p id="message-text">Your data has been securely saved for the administrator.</p>
+            <button class="btn" onclick="location.reload()" style="margin-top:15px;">Restart Quiz</button>
+        </div>
+
+        <button class="btn" id="submit-btn" onclick="processResults()" style="width:100%; margin-top:20px; background:var(--success); color:white; border:none;">Submit Assessment</button>
+    </div>
+</div>
+
+<script>
+    let currentAgeGroup = '';
+    const quizData = {
+        '5-9': {
+            title: "Little Explorers (Ages 5-9)",
+            img: "https://images.unsplash.com/photo-1502086223501-7ea24ec3946d?w=400",
+            questions: [
+                { q: "How much time do you use a mobile phone or tablet in a day?", options: [{t: "⏱ Less than 1 hour", p: 0}, {t: "⏱ 1–2 hours", p: 1}, {t: "⏱ More than 2 hours", p: 2}] },
+                { q: "What do you mostly use the screen for?", options: [{t: "Learning", p: 0}, {t: "Videos / cartoons", p: 1}, {t: "Games", p: 2}] },
+                { q: "Do you use the phone with an adult or alone?", options: [{t: "With an adult", p: 0}, {t: "Sometimes alone", p: 1}, {t: "Mostly alone", p: 2}] },
+                { q: "Do you feel upset when the phone or TV is taken away?", options: [{t: "No", p: 0}, {t: "A little", p: 1}, {t: "Yes, a lot", p: 2}] },
+                { q: "Do you sometimes skip playing outside because of screen time?", options: [{t: "No", p: 0}, {t: "Sometimes", p: 1}, {t: "Yes, often", p: 2}] },
+                { q: "Does using screens make you feel happy, tired, or angry?", options: [{t: "Happy", p: 0}, {t: "Tired", p: 1}, {t: "Angry", p: 2}] },
+                { q: "Do your parents set rules for screen time?", options: [{t: "Yes, always", p: 0}, {t: "Sometimes", p: 1}, {t: "No rules", p: 2}] }
+            ]
+        },
+        '10-14': {
+            title: "Digital Navigators (Ages 10-14)",
+            img: "https://images.unsplash.com/photo-1485546246426-74dc88dec4d9?w=400",
+            questions: [
+                 { q: "Do you use social media apps (YouTube, Instagram, Snapchat, WhatsApp)?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, a lot", p: 2}] },
+                 { q: "How much time do you spend on screens each day (outside schoolwork)?", options: [{t: "Less than 1 hour", p: 0}, {t: "1–3 hours", p: 1}, {t: "More than 3 hours", p: 2}] },
+                 { q: "What do you usually do online?", options: [{t: "Learn new things", p: 0}, {t: "Watch videos / Chat", p: 1}, {t: "Play games", p: 2}] },
+                 { q: "Do you ever feel sad, jealous, or angry after using social media?", options: [{t: "Never", p: 0}, {t: "Rarely", p: 1}, {t: "Often", p: 2}] },
+                 { q: "Do you compare yourself with people you see online?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, often", p: 2}] },
+                 { q: "Have you ever been teased, ignored, or made uncomfortable online?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, it happens", p: 2}] },
+                 { q: "Do you talk to your parents or teachers about your online experiences?", options: [{t: "Yes, always", p: 0}, {t: "Rarely", p: 1}, {t: "No, never", p: 2}] },
+                 { q: "Does screen time affect your sleep or homework?", options: [{t: "Not at all", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, a lot", p: 2}] },
+                 { q: "Do you feel restless or bored without your phone?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, very much", p: 2}] },
+                 { q: "Do you think you spend more time online than you should?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, definitely", p: 2}] }
+            ]
+        },
+        '15-19': {
+            title: "Young Achievers (Ages 15-19)",
+            img: "https://images.unsplash.com/photo-1529333166437-7750a6dd5a70?w=400",
+            questions: [
+                { q: "Which social media platforms do you use regularly?", options: [{t: "None / Educational", p: 0}, {t: "1 or 2 apps", p: 1}, {t: "Multiple", p: 2}] },
+                { q: "On average, how much time do you spend on social media daily?", options: [{t: "Less than 1 hour", p: 0}, {t: "1–3 hours", p: 1}, {t: "3–5 hours", p: 2}, {t: "More than 5 hours", p: 3}] },
+                { q: "What is your main reason for using social media?", options: [{t: "Learning", p: 0}, {t: "Staying connected", p: 1}, {t: "Entertainment / Distraction", p: 2}] },
+                { q: "How does social media usually make you feel?", options: [{t: "Motivated / Relaxed", p: 0}, {t: "Anxious", p: 2}, {t: "Insecure", p: 3}] },
+                { q: "Do you feel pressure to look, act, or live a certain way online?", options: [{t: "Never", p: 0}, {t: "Sometimes", p: 1}, {t: "Always", p: 2}] },
+                { q: "Do likes, comments, or views affect your mood?", options: [{t: "Not at all", p: 0}, {t: "A little", p: 1}, {t: "Significantly", p: 2}] },
+                { q: "Have you experienced online bullying or unwanted messages?", options: [{t: "No", p: 0}, {t: "Rarely", p: 1}, {t: "Yes, a lot", p: 2}] },
+                { q: "Does social media affect your sleep, focus, or self-confidence?", options: [{t: "No", p: 0}, {t: "Sometimes", p: 1}, {t: "Yes, often", p: 2}] },
+                { q: "Have you tried to reduce screen time but found it difficult?", options: [{t: "No", p: 0}, {t: "A few times", p: 1}, {t: "Yes, often", p: 2}] },
+                { q: "Do you feel comfortable taking breaks from social media?", options: [{t: "Yes", p: 0}, {t: "A little bit", p: 1}, {t: "No", p: 2}] },
+                { q: "Do you follow content that makes you feel positive and supported?", options: [{t: "Yes, mostly", p: 0}, {t: "Sometimes", p: 1}, {t: "No", p: 2}] },
+                { q: "Do you know how to block or report harmful online behavior?", options: [{t: "Yes", p: 0}, {t: "I think so", p: 1}, {t: "No", p: 2}] }
+            ]
+        }
+    };
+
+    function loadQuiz(age) {
+        currentAgeGroup = age;
+        const area = document.getElementById('quiz-area');
+        area.classList.remove('hidden');
+        document.getElementById('result-display').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'block';
+        document.getElementById('age-title').innerText = quizData[age].title;
+        document.getElementById('age-img').src = quizData[age].img;
+        
+        document.getElementById('questions-container').innerHTML = quizData[age].questions.map((item, qIdx) => `
+            <div class="question-card">
+                <p><strong>${item.q}</strong></p>
+                <div class="options-grid">
+                    ${item.options.map((opt) => `
+                        <label class="option-label">
+                            <input type="radio" name="q${qIdx}" value="${opt.p}" required> ${opt.t}
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+        `).join('');
+        
+        area.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function processResults() {
+        const form = document.getElementById('quiz-form');
+        const formData = new FormData(form);
+        const questions = quizData[currentAgeGroup].questions;
+        const totalQuestions = questions.length;
+        
+        if (Array.from(formData.keys()).length < totalQuestions) {
+            alert("Please answer all questions before submitting!");
+            return;
+        }
+
+        let totalScore = 0;
+        for (let value of formData.values()) { totalScore += parseInt(value); }
+
+        // Max possible score is sum of highest point options
+        let maxScore = 0;
+        questions.forEach(q => {
+            maxScore += Math.max(...q.options.map(o => o.p));
+        });
+
+        // Determine Status based on your logic:
+        // Very Low = Emergency | Medium = Consult Doctor | Very High = Normal
+        let statusLabel = "";
+        let statusColor = "";
+        const scorePercentage = (totalScore / maxScore) * 100;
+
+        if (scorePercentage < 30) {
+            statusLabel = "🚨 EMERGENCY: Please consult a doctor immediately.";
+            statusColor = "#ff7675";
+        } else if (scorePercentage < 75) {
+            statusLabel = "⚠️ NORMAL RISK: You should consult a doctor for a checkup.";
+            statusColor = "#fdcb6e";
+        } else {
+            statusLabel = "✅ VERY HIGH: Everything is normal. Great habits!";
+            statusColor = "#00b894";
+        }
+
+        // Save to LocalStorage for Admin Panel
+        const records = JSON.parse(localStorage.getItem('mentalHealthScores')) || [];
+        records.push({ 
+            id: Date.now(), 
+            date: new Date().toLocaleString(), 
+            ageGroup: currentAgeGroup, 
+            score: totalScore,
+            status: statusLabel 
+        });
+        localStorage.setItem('mentalHealthScores', JSON.stringify(records));
+
+        // UI Updates
+        document.getElementById('submit-btn').style.display = 'none';
+        const resultBox = document.getElementById('result-display');
+        
+        document.getElementById('score-text').innerText = `Your Score: ${totalScore}`;
+        document.getElementById('status-text').innerText = statusLabel;
+        document.getElementById('status-text').style.color = statusColor;
+        
+        resultBox.style.display = 'block';
+        resultBox.scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+</body>
+</html>

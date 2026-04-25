@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Kids Login 🌈</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    margin: 0;
+    font-family: Comic Sans MS, cursive;
+    background: linear-gradient(to bottom right, #89f7fe, #66a6ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  .login-box {
+    background: white;
+    padding: 30px;
+    border-radius: 20px;
+    width: 320px;
+    box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    text-align: center;
+  }
+
+  h1 { color: #ff6f61; }
+
+  input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+  }
+
+  button {
+    background: #ff6f61;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .error {
+    color: red;
+    margin-top: 10px;
+    font-size: 14px;
+  }
+
+  .register-link {
+    margin-top: 15px;
+    font-size: 14px;
+  }
+
+  .register-link a {
+    color: #66a6ff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .register-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+
+<body>
+<div class="login-box">
+  <h1>Kids Login 😊</h1>
+
+  <input type="text" id="name" placeholder="Your Name">
+  <input type="number" id="age" placeholder="Your Age">
+
+  <button onclick="login()">Login 🚀</button>
+
+  <div class="register-link">
+    New user? <a href="register.html">Register here 📝</a>
+  </div>
+
+  <p id="error" class="error"></p>
+</div>
+
+<script>
+function login() {
+  const name = document.getElementById("name").value.trim();
+  const age = document.getElementById("age").value.trim();
+  const error = document.getElementById("error");
+
+  error.textContent = "";
+
+  // Basic validation
+  if (!name || !age) {
+    error.textContent = "Enter name and age";
+    return;
+  }
+
+  if (age < 5 || age > 18) {
+    error.textContent = "Age must be between 5 and 18";
+    return;
+  }
+
+  // 🔍 Check registration
+  const registeredKids = JSON.parse(localStorage.getItem("registeredKids")) || [];
+
+  const isRegistered = registeredKids.some(
+    kid => kid.name === name && kid.age == age
+  );
+
+  if (!isRegistered) {
+    error.textContent = "❌ You have not registered. Please register first.";
+    return;
+  }
+
+  // ✅ Save login entry
+  const loginEntries = JSON.parse(localStorage.getItem("loginEntries")) || [];
+  loginEntries.push({
+    name: name,
+    age: age,
+    time: new Date().toLocaleString()
+  });
+
+  localStorage.setItem("loginEntries", JSON.stringify(loginEntries));
+
+  // Redirect to quiz
+  window.location.href = "quiz.html";
+}
+</script>
+</body>
+</html>

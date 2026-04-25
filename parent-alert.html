@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMap - WhatsApp Parent Alert</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #e5ddd5; /* WhatsApp background color */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .whatsapp-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        h2 { color: #075e54; margin-bottom: 10px; }
+        p { color: #636e72; font-size: 14px; margin-bottom: 25px; }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
+            transition: border-color 0.3s;
+        }
+
+        .input-container:focus-within { border-color: #25d366; }
+
+        .prefix { font-weight: bold; margin-right: 10px; color: #333; }
+
+        input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 16px;
+            background: transparent;
+        }
+
+        .send-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #25d366; /* WhatsApp Green */
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .send-btn:hover { background-color: #128c7e; }
+
+        #status {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #d63031;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <div class="whatsapp-icon">🟢</div>
+        <h2>WhatsApp Alert</h2>
+        <p>Send a direct alert to the parent via WhatsApp. <br> <strong>MindMap Security System</strong></p>
+
+        <div class="input-container">
+            <span class="prefix">+91</span>
+            <input type="text" id="parentPhone" placeholder="8000864380" maxlength="10">
+        </div>
+
+        <button class="send-btn" onclick="sendWhatsApp()">Open WhatsApp Chat</button>
+        
+        <div id="status">Please enter a valid 10-digit number.</div>
+    </div>
+
+    <script>
+        function sendWhatsApp() {
+            const phone = document.getElementById('parentPhone').value;
+            const status = document.getElementById('status');
+
+            // 1. Check if the number is exactly 10 digits
+            if (phone.length !== 10 || isNaN(phone)) {
+                status.style.display = 'block';
+                return;
+            }
+
+            status.style.display = 'none';
+
+            // 2. Prepare the alert message
+            const message = "🚨 *MindMap Alert Notification* 🚨\n\nDear Parent, we have detected unusual activity on your child's profile. Please log in to the MindMap dashboard to review the recent mental health metrics.";
+            
+            // 3. Encode the message for a URL
+            const encodedMessage = encodeURIComponent(message);
+
+            // 4. Redirect to WhatsApp API
+            // This works on Mobile (App) and Desktop (WhatsApp Web)
+            const whatsappURL = `https://wa.me/91${phone}?text=${encodedMessage}`;
+            
+            window.open(whatsappURL, '_blank');
+        }
+    </script>
+
+</body>
+</html>

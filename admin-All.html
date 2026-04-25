@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel – All Entries 🔐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h2 {
+      margin-top: 40px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    button.reset {
+      background: red;
+      color: white;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      margin-top: 10px;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #66a6ff;
+      color: white;
+    }
+
+    .parent th { background: #4caf50; }
+    .register th { background: #ff9800; }
+
+    .empty {
+      text-align: center;
+      color: #888;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>ADMIN PANEL – ALL ENTRIES 👀</h1>
+
+<!-- ================= KIDS LOGIN ================= -->
+<h2>
+  Kids Login Entries 🧒
+  <button class="reset" onclick="resetKidsLogin()">Reset</button>
+</h2>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Login Time</th>
+    </tr>
+  </thead>
+  <tbody id="kidsLogin"></tbody>
+</table>
+
+<!-- ================= KIDS REGISTRATION ================= -->
+<h2>
+  Kids Registration Entries 📝
+  <button class="reset" onclick="resetRegistration()">Reset</button>
+</h2>
+<table class="register">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Child Name</th>
+      <th>Age</th>
+      <th>Parent Email</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody id="kidsRegister"></tbody>
+</table>
+
+<!-- ================= PARENT REGISTRATION ================= -->
+<h2>
+  Parent Registration Entries 👨‍👩‍👧
+  <button class="reset" onclick="resetParentRegistration()">Reset</button>
+</h2>
+<table class="parent">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Parent Email</th>
+      <th>Registration Time</th>
+    </tr>
+  </thead>
+  <tbody id="parentRegister"></tbody>
+</table>
+
+<!-- ================= PARENT LOGIN ================= -->
+<h2>
+  Parent Login Entries 👨‍👩‍👧
+  <button class="reset" onclick="resetParentLogin()">Reset</button>
+</h2>
+<table class="parent">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Parent Email</th>
+      <th>Login Time</th>
+    </tr>
+  </thead>
+  <tbody id="parentLogin"></tbody>
+</table>
+
+<script>
+/* ========== LOAD DATA ========== */
+function loadData() {
+
+  /* KIDS LOGIN */
+  const kidsLogins = JSON.parse(localStorage.getItem("loginEntries")) || [];
+  const kidsLoginBody = document.getElementById("kidsLogin");
+  kidsLoginBody.innerHTML = "";
+
+  if (kidsLogins.length === 0) {
+    kidsLoginBody.innerHTML =
+      "<tr><td colspan='4' class='empty'>No kids login data</td></tr>";
+  } else {
+    kidsLogins.forEach((k, i) => {
+      kidsLoginBody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${k.name}</td>
+          <td>${k.age}</td>
+          <td>${k.time}</td>
+        </tr>`;
+    });
+  }
+
+  /* KIDS REGISTRATION */
+  const registrations = JSON.parse(localStorage.getItem("registrations")) || [];
+  const regBody = document.getElementById("kidsRegister");
+  regBody.innerHTML = "";
+
+  if (registrations.length === 0) {
+    regBody.innerHTML =
+      "<tr><td colspan='5' class='empty'>No registrations</td></tr>";
+  } else {
+    registrations.forEach((r, i) => {
+      regBody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${r.name}</td>
+          <td>${r.age}</td>
+          <td>${r.email}</td>
+          <td>${r.time}</td>
+        </tr>`;
+    });
+  }
+
+  /* PARENT REGISTRATION */
+  const parentRegs =
+    JSON.parse(localStorage.getItem("parentRegistrations")) || [];
+  const parentRegBody = document.getElementById("parentRegister");
+  parentRegBody.innerHTML = "";
+
+  if (parentRegs.length === 0) {
+    parentRegBody.innerHTML =
+      "<tr><td colspan='3' class='empty'>No parent registrations</td></tr>";
+  } else {
+    parentRegs.forEach((p, i) => {
+      parentRegBody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${p.email}</td>
+          <td>${p.time}</td>
+        </tr>`;
+    });
+  }
+
+  /* PARENT LOGIN */
+  const parents = JSON.parse(localStorage.getItem("parentLogins")) || [];
+  const parentBody = document.getElementById("parentLogin");
+  parentBody.innerHTML = "";
+
+  if (parents.length === 0) {
+    parentBody.innerHTML =
+      "<tr><td colspan='3' class='empty'>No parent logins</td></tr>";
+  } else {
+    parents.forEach((p, i) => {
+      parentBody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${p.email}</td>
+          <td>${p.time}</td>
+        </tr>`;
+    });
+  }
+}
+
+/* ========== RESET FUNCTIONS ========== */
+function resetKidsLogin() {
+  if (confirm("Delete ALL kids login entries?")) {
+    localStorage.removeItem("loginEntries");
+    loadData();
+  }
+}
+
+function resetRegistration() {
+  if (confirm("Delete ALL kids registrations?")) {
+    localStorage.removeItem("registrations");
+    localStorage.removeItem("registeredKids");
+    loadData();
+  }
+}
+
+function resetParentRegistration() {
+  if (confirm("Delete ALL parent registrations?")) {
+    localStorage.removeItem("parentRegistrations");
+    loadData();
+  }
+}
+
+function resetParentLogin() {
+  if (confirm("Delete ALL parent login entries?")) {
+    localStorage.removeItem("parentLogins");
+    loadData();
+  }
+}
+
+/* Load on page open */
+loadData();
+</script>
+
+</body>
+</html>

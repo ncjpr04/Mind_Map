@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kid's Mood Tracker</title>
+  <style>
+    body {
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: linear-gradient(to right, #ffe0ec, #e0f7fa);
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #ff4081;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      font-size: 18px;
+    }
+
+    select, textarea, button {
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid #90caf9;
+      font-size: 18px;
+      width: 100%;
+    }
+
+    select {
+      background-color: #f3faff;
+    }
+
+    textarea {
+      resize: none;
+    }
+
+    button {
+      background-color: #ffca28;
+      color: #000;
+      border: none;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #ffb300;
+    }
+
+    #moodList {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    #moodList li {
+      background: #e1f5fe;
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 16px;
+      position: relative;
+      transition: transform 0.2s ease-in;
+    }
+
+    #moodList li:hover {
+      transform: scale(1.02);
+    }
+
+    .emoji-preview {
+      font-size: 40px;
+      text-align: center;
+      margin: 10px 0;
+      transition: transform 0.3s ease;
+    }
+
+    .emoji-preview.animate {
+      transform: scale(1.5);
+    }
+
+    textarea::placeholder {
+      color: #aaa;
+    }
+
+    .success {
+      text-align: center;
+      color: green;
+      font-weight: bold;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎈 How Are You Feeling?</h1>
+    <form id="moodForm">
+      <label for="mood">Pick Your Mood</label>
+      <select id="mood" required>
+        <option value="">🎨 Choose...</option>
+        <option value="😊 Happy">😊 Happy</option>
+        <option value="😐 Okay">😐 Okay</option>
+        <option value="😢 Sad">😢 Sad</option>
+        <option value="😠 Angry">😠 Angry</option>
+        <option value="😌 Relaxed">😌 Relaxed</option>
+      </select>
+
+      <div class="emoji-preview" id="emojiPreview">🙂</div>
+
+      <label for="note">Wanna say something?</label>
+      <textarea id="note" rows="3" placeholder="You can write your reason here..."></textarea>
+
+      <button type="submit">🌟 Save My Mood</button>
+      <div class="success" id="successMsg">🎉 Mood saved! Great job!</div>
+    </form>
+
+    <h2>🌈 Mood Journal</h2>
+    <ul id="moodList"></ul>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('moodForm');
+      const moodList = document.getElementById('moodList');
+      const emojiPreview = document.getElementById('emojiPreview');
+      const successMsg = document.getElementById('successMsg');
+      const moodDropdown = document.getElementById('mood');
+
+      // Mood preview change
+      moodDropdown.addEventListener('change', () => {
+        emojiPreview.textContent = moodDropdown.value.split(' ')[0];
+        emojiPreview.classList.add('animate');
+        setTimeout(() => emojiPreview.classList.remove('animate'), 500);
+      });
+
+      // Load saved moods
+      const moodEntries = JSON.parse(localStorage.getItem('moodEntries')) || [];
+
+      const saveAndRender = () => {
+        localStorage.setItem('moodEntries', JSON.stringify(moodEntries));
+        renderMoods();
+      };
+
+      const renderMoods = () => {
+        moodList.innerHTML = '';
+        moodEntries.forEach(entry => {
+          const li = document.createElement('li');
+          li.textContent = `${entry.date} - ${entry.mood}${entry.note ? ' — ' + entry.note : ''}`;
+          moodList.appendChild(li);
+        });
+      };
+
+      form.addEventListener('submit', e => {
+        e.preventDefault();
+        const mood = moodDropdown.value;
+        const note = document.getElementById('note').value.trim();
+        const date = new Date().toLocaleDateString();
+
+        if (!mood) return;
+
+        moodEntries.unshift({ mood, note, date });
+        saveAndRender();
+        form.reset();
+        emojiPreview.textContent = '🙂';
+
+        // Show success message
+        successMsg.style.display = 'block';
+        setTimeout(() => successMsg.style.display = 'none', 2000);
+      });
+
+      renderMoods();
+    });
+  </script>
+</body>
+</html>

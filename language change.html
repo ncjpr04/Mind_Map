@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MindMap Kids - Multilingual</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Noto+Sans+Devanagari:wght@400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-teal: #4aa3a2;
+            --soft-bg: #f4f9fb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--soft-bg);
+            transition: all 0.3s ease;
+        }
+
+        body.lang-hi {
+            font-family: 'Noto Sans Devanagari', sans-serif;
+        }
+
+        .heading-font {
+            font-family: 'Fredoka One', cursive;
+        }
+
+        .card {
+            background: white;
+            transition: transform 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        select#langSelect {
+            border: 2px solid var(--primary-teal);
+            outline: none;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <header class="bg-white shadow-sm p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-[#4aa3a2] heading-font">MindMap Kids</h1>
+        
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+                <span id="label-lang" class="text-sm font-medium text-gray-600">🌐 Language:</span>
+                <select id="langSelect" onchange="updateLanguage()" class="p-1 rounded-lg text-sm bg-white">
+                    <option value="en">English</option>
+                    <option value="hi">हिन्दी</option>
+                </select>
+            </div>
+            <nav class="hidden md:flex gap-4 font-medium text-gray-700">
+                <a href="#" id="nav-home">Home</a>
+                <a href="Age.html" id="nav-quiz">Quiz</a>
+                <a href="Contact.html" id="nav-contact">Contact</a>
+                <a href="Profile setting page.html" id="nav-profilepage">Profile page</a>
+                <a href="parent-alert.html" id="nav-parentalert">Parent-Alert</a>
+                <a href="parents login.html" id="nav-parentslogin">Parents Login</a>
+                <a href="login page.html" id="nav-childlogin">Child Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto p-6 mt-10 text-center">
+        
+        <section class="mb-12">
+            <h2 id="main-title" class="text-4xl md:text-5xl text-[#2b7a78] font-bold mb-4 heading-font">
+                Helping Children Thrive
+            </h2>
+            <p id="main-desc" class="text-lg text-gray-600 max-w-2xl mx-auto">
+                MindMap Kids helps you understand your feelings and stay happy every day.
+            </p>
+            <div class="mt-8 flex justify-center gap-4">
+                <button id="btn-get-started" class="bg-[#4aa3a2] text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-[#3a8a89]">
+                    Get Started Free
+                    <a href="quiz.html" id="link-mood" class="text-[#4aa3a2] font-semibold mt-2 inline-block">Get Start Free</a>
+                </button>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
+            <div class="card p-6 rounded-2xl shadow-md border-b-4 border-[#4aa3a2]">
+                <div class="text-4xl mb-3">😊</div>
+                <h3 id="card1-title" class="font-bold text-xl mb-2">Mood Tracking</h3>
+                <p id="card1-desc" class="text-gray-500 text-sm">Track how you feel daily with fun emojis.</p>
+                <a href="Mood tracking.html" id="link-mood" class="text-[#4aa3a2] font-semibold mt-2 inline-block">Mood Tracker</a>
+            </div>
+            <div class="card p-6 rounded-2xl shadow-md border-b-4 border-yellow-400">
+                <div class="text-4xl mb-3">🧠</div>
+                <h3 id="card2-title" class="font-bold text-xl mb-2">Mental Quiz</h3>
+                <p id="card2-desc" class="text-gray-500 text-sm">Take a quick check-in to see how you're doing.</p>
+                <a href="Age.html" id="link-quiz" class="text-[#4aa3a2] font-semibold mt-2 inline-block">Mental Quiz</a>
+            </div>
+            <div class="card p-6 rounded-2xl shadow-md border-b-4 border-pink-400">
+                <div class="text-4xl mb-3">🛡️</div>
+                <h3 id="card3-title" class="font-bold text-xl mb-2">Safe Space</h3>
+                <p id="card3-desc" class="text-gray-500 text-sm">Your privacy is our biggest priority.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="mt-20 py-8 bg-gray-100 text-center border-t">
+        <p id="footer-text" class="text-gray-500 font-medium">Remember: All feelings are okay! 💖</p>
+    </footer>
+
+    <script>
+        const data = {
+            en: {
+                labelLang: "🌐 Language:",
+                navHome: "Home",
+                navQuiz: "Quiz",
+                navContact: "Contact",
+                navProfile: "Profile Page",
+                navParentAlert: "Parent-Alert",
+                navParentsLogin: "Parents Login",
+                navChildLogin: "Child Login",
+                mainTitle: "Helping Children Thrive",
+                mainDesc: "MindMap Kids helps you understand your feelings and stay happy every day.",
+                btnStart: "Get Started Free",
+                card1Title: "Mood Tracking",
+                card1Desc: "Track how you feel daily with fun emojis.",
+                card1Link: "Mood Tracker",
+                card2Title: "Mental Quiz",
+                card2Desc: "Take a quick check-in to see how you're doing.",
+                card3Title: "Safe Space",
+                card3Desc: "Your privacy is our biggest priority.",
+                footerText: "Remember: All feelings are okay! 💖",
+                bodyClass: "lang-en"
+            },
+            hi: {
+                labelLang: "🌐 भाषा:",
+                navHome: "मुख्य पृष्ठ",
+                navQuiz: "क्विज़",
+                navContact: "संपर्क",
+                navProfile: "प्रोफ़ाइल पेज",
+                navParentAlert: "अभिभावक अलर्ट",
+                navParentsLogin: "अभिभावक लॉगिन",
+                navChildLogin: "बच्चा लॉगिन",
+                mainTitle: "बच्चों के बेहतर विकास में मदद",
+                mainDesc: "माइंडमैप किड्स आपको अपनी भावनाओं को समझने और हर दिन खुश रहने में मदद करता है।",
+                btnStart: "मुफ्त शुरू करें",
+                card1Title: "मूड ट्रैकिंग",
+                card1Desc: "मजेदार इमोजी के साथ अपनी दैनिक भावनाओं को ट्रैक करें।",
+                card1Link: "मूड ट्रैकर",
+                card2Title: "मानसिक क्विज़",
+                card2Desc: "आप कैसा महसूस कर रहे हैं, यह जानने के लिए एक छोटा टेस्ट लें।",
+                card3Title: "सुरक्षित जगह",
+                card3Desc: "आपकी गोपनीयता हमारी सबसे बड़ी प्राथमिकता है।",
+                footerText: "याद रखें: सभी भावनाएँ सामान्य और ठीक हैं! 💖",
+                bodyClass: "lang-hi"
+            }
+        };
+
+        function updateLanguage() {
+            const select = document.getElementById('langSelect');
+            const lang = select.value;
+            const content = data[lang];
+
+            // Header/Nav
+            document.getElementById('label-lang').textContent = content.labelLang;
+            document.getElementById('nav-home').textContent = content.navHome;
+            document.getElementById('nav-quiz').textContent = content.navQuiz;
+            document.getElementById('nav-contact').textContent = content.navContact;
+            document.getElementById('nav-profilepage').textContent = content.navProfile;
+            document.getElementById('nav-parentalert').textContent = content.navParentAlert;
+            document.getElementById('nav-parentslogin').textContent = content.navParentsLogin;
+            document.getElementById('nav-childlogin').textContent = content.navChildLogin;
+
+            // Main Hero
+            document.getElementById('main-title').textContent = content.mainTitle;
+            document.getElementById('main-desc').textContent = content.mainDesc;
+            document.getElementById('btn-get-started').textContent = content.btnStart;
+
+            // Cards
+            document.getElementById('card1-title').textContent = content.card1Title;
+            document.getElementById('card1-desc').textContent = content.card1Desc;
+            document.getElementById('link-mood').textContent = content.card1Link;
+            
+            document.getElementById('card2-title').textContent = content.card2Title;
+            document.getElementById('card2-desc').textContent = content.card2Desc;
+            
+            document.getElementById('card3-title').textContent = content.card3Title;
+            document.getElementById('card3-desc').textContent = content.card3Desc;
+
+            // Footer
+            document.getElementById('footer-text').textContent = content.footerText;
+
+            // Font Switching
+            document.body.className = "min-h-screen " + content.bodyClass;
+
+            localStorage.setItem('selectedLang', lang);
+        }
+
+        window.onload = () => {
+            const savedLang = localStorage.getItem('selectedLang') || 'en';
+            document.getElementById('langSelect').value = savedLang;
+            updateLanguage();
+        };
+    </script>
+</body>
+</html>

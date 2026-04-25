@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel 🔐</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+      padding: 20px;
+    }
+
+    h1 { text-align: center; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #66a6ff;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>Admin – Login Entries 👀</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Age</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody id="data"></tbody>
+</table>
+
+<script>
+  const entries = JSON.parse(localStorage.getItem("loginEntries")) || [];
+  const tbody = document.getElementById("data");
+
+  if (entries.length === 0) {
+    tbody.innerHTML =
+      "<tr><td colspan='4'>No entries found</td></tr>";
+  } else {
+    entries.forEach((e, i) => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${e.name}</td>
+          <td>${e.age}</td>
+          <td>${e.time}</td>
+        </tr>
+      `;
+    });
+  }
+</script>
+
+</body>
+</html>
